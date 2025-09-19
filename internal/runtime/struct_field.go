@@ -7,7 +7,7 @@ import (
 )
 
 func getTag(field reflect.StructField) string {
-	return field.Tag.Get("php")
+	return field.Tag.Get("json")
 }
 
 func IsIgnoredStructField(field reflect.StructField) bool {
