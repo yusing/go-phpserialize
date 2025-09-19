@@ -235,7 +235,11 @@ func readLength(buf []byte, cursor int64) (int64, int64, error) {
 		return 0, cursor, err
 	}
 
-	return parseByteStringInt64(buf[cursor+1 : end-1]), end, nil
+	value, err := strconv.ParseInt(string(buf[cursor+1:end-1]), 10, 64)
+	if err != nil {
+		return 0, cursor, errors.ErrSyntax(err.Error(), cursor)
+	}
+	return value, end, nil
 }
 
 // :${length}:
@@ -245,7 +249,11 @@ func readLengthInt(buf []byte, cursor int64) (int, int64, error) {
 		return 0, cursor, err
 	}
 
-	return parseByteStringInt(buf[cursor+1 : end-1]), end, nil
+	value, err := strconv.ParseInt(string(buf[cursor+1:end-1]), 10, 64)
+	if err != nil {
+		return 0, cursor, errors.ErrSyntax(err.Error(), cursor)
+	}
+	return int(value), end, nil
 }
 
 // `:${length}:"${content}";`
@@ -269,24 +277,6 @@ func readString(buf []byte, cursor int64) ([]byte, int64, error) {
 	cursor++
 
 	return buf[start:end], cursor, nil
-}
-
-func parseByteStringInt64(b []byte) int64 {
-	var l int64
-	for _, c := range b {
-		l = l*10 + int64(c-'0')
-	}
-
-	return l
-}
-
-func parseByteStringInt(b []byte) int {
-	var l int
-	for _, c := range b {
-		l = l*10 + int(c-'0')
-	}
-
-	return l
 }
 
 func readBool(buf []byte, cursor int64) (bool, error) {

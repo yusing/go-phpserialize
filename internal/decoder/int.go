@@ -3,6 +3,7 @@ package decoder
 import (
 	"fmt"
 	"reflect"
+	"strconv"
 	"unsafe"
 
 	"github.com/trim21/go-phpserialize/internal/errors"
@@ -182,7 +183,10 @@ func readInt(buf []byte, cursor int64) (int, int64, error) {
 		if char(b, cursor) != ';' {
 			return 0, cursor, errors.ErrUnexpected("';' end int", cursor, buf[cursor])
 		}
-		value := parseByteStringInt(buf[start:cursor])
+		value, err := strconv.Atoi(string(buf[start:cursor]))
+		if err != nil {
+			return 0, cursor, errors.ErrSyntax(err.Error(), cursor)
+		}
 		cursor++
 		return value, cursor, nil
 	default:

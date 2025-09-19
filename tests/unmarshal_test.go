@@ -40,6 +40,20 @@ func TestUnmarshal_struct_string(t *testing.T) {
 		require.Equal(t, "0147852369", c.F)
 	})
 
+	t.Run("typed", func(t *testing.T) {
+		type S string
+		type Container struct {
+			F S    `json:"f1q"`
+			V bool `json:"1a9"`
+		}
+
+		var c Container
+		raw := `a:1:{s:3:"f1q";s:10:"0147852369";}`
+		err := phpserialize.Unmarshal([]byte(raw), &c)
+		require.NoError(t, err)
+		require.Equal(t, S("0147852369"), c.F)
+	})
+
 	t.Run("empty", func(t *testing.T) {
 		type Container struct {
 			F string `json:"f"`
