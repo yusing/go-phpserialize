@@ -27,7 +27,7 @@ func BenchmarkMarshal_type(b *testing.B) {
 
 func BenchmarkMarshal_field_as_string(b *testing.B) {
 	data := struct {
-		F int `php:",string"`
+		F int `json:",string"`
 	}{}
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -473,9 +473,9 @@ func BenchmarkMarshal_uint(b *testing.B) {
 
 func BenchmarkMarshal_many_map_field(b *testing.B) {
 	var s = struct {
-		Map1 map[string]int `php:"map_1"`
-		Map2 map[int]string `php:"map_2"`
-		Map3 map[uint]int   `php:"map_3"`
+		Map1 map[string]int `json:"map_1"`
+		Map2 map[int]string `json:"map_2"`
+		Map3 map[uint]int   `json:"map_3"`
 	}{
 		Map1: map[string]int{
 			"one":   1,

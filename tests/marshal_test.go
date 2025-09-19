@@ -14,28 +14,28 @@ import (
 )
 
 type Container struct {
-	Value any `php:"value"`
+	Value any `json:"value"`
 }
 
 type Inner struct {
-	V int    `php:"v" json:"v"`
-	S string `php:"a long string name replace field name" json:"a long string name replace field name"`
+	V int    `json:"v"`
+	S string `json:"a long string name replace field name"`
 }
 
 type TestData struct {
-	Users []User                  `php:"users" json:"users"`
-	Obj   Inner                   `php:"obj" json:"obj"`
-	B     bool                    `php:"ok" json:"ok"`
-	Map   map[int]struct{ V int } `php:"map" json:"map"`
+	Users []User                  `json:"users"`
+	Obj   Inner                   `json:"obj"`
+	B     bool                    `json:"ok"`
+	Map   map[int]struct{ V int } `json:"map"`
 }
 
 type User struct {
-	ID   uint64 `php:"id" json:"id"`
-	Name string `php:"name" json:"name"`
+	ID   uint64 `json:"id"`
+	Name string `json:"name"`
 }
 
 type Item struct {
-	V int `json:"v" php:"v"`
+	V int `json:"v"`
 }
 
 type ContainerNonAnonymous struct {
@@ -47,18 +47,18 @@ type ContainerNonAnonymous struct {
 type Case struct {
 	Name     string
 	Data     any
-	Expected string `php:"-" json:"-"`
+	Expected string `json:"-"`
 }
 
 // map in struct is an indirect ptr
 type MapPtr struct {
-	Users []Item           `php:"users" json:"users"`
-	Map   map[string]int64 `php:"map" json:"map"`
+	Users []Item           `json:"users"`
+	Map   map[string]int64 `json:"map"`
 }
 
 // map in struct is a direct ptr
 type MapOnly struct {
-	Map map[string]int64 `php:"map" json:"map"`
+	Map map[string]int64 `json:"map"`
 }
 
 type NestedMap = map[int]map[uint]string
@@ -74,7 +74,7 @@ var testCase = []Case{
 	{
 		Name: "bool true as string",
 		Data: struct {
-			B bool `php:"b,string"`
+			B bool `json:"b,string"`
 		}{B: true},
 		Expected: `a:1:{s:1:"b";s:4:"true";}`,
 	},
@@ -84,7 +84,7 @@ var testCase = []Case{
 	{
 		Name: "bool true as string",
 		Data: struct {
-			B bool `php:"b,string"`
+			B bool `json:"b,string"`
 		}{},
 		Expected: `a:1:{s:1:"b";s:5:"false";}`,
 	},
@@ -94,7 +94,7 @@ var testCase = []Case{
 	{
 		Name: "*bool-as-string-direct",
 		Data: struct {
-			Value *bool `php:"value,string"`
+			Value *bool `json:"value,string"`
 		}{Value: toPtr(false)},
 		Expected: `a:1:{s:5:"value";s:5:"false";}`,
 	},
@@ -102,7 +102,7 @@ var testCase = []Case{
 	{
 		Name: "*bool-as-string-indirect",
 		Data: struct {
-			Value *bool `php:"value,string"`
+			Value *bool `json:"value,string"`
 			B     *bool
 		}{Value: toPtr(false)},
 		Expected: `a:2:{s:5:"value";s:5:"false";s:1:"B";N;}`,
@@ -118,7 +118,7 @@ var testCase = []Case{
 	{
 		Name: "int8 as string",
 		Data: struct {
-			Value int8 `php:"value,string"`
+			Value int8 `json:"value,string"`
 		}{Value: 10},
 		Expected: `a:1:{s:5:"value";s:2:"10";}`,
 	},
@@ -128,7 +128,7 @@ var testCase = []Case{
 	{
 		Name: "int16 as string",
 		Data: struct {
-			Value int16 `php:"value,string"`
+			Value int16 `json:"value,string"`
 		}{Value: 100},
 		Expected: `a:1:{s:5:"value";s:3:"100";}`,
 	},
@@ -138,14 +138,14 @@ var testCase = []Case{
 	{
 		Name: "int32 as string",
 		Data: struct {
-			Value int32 `php:"value,string"`
+			Value int32 `json:"value,string"`
 		}{Value: 100},
 		Expected: `a:1:{s:5:"value";s:3:"100";}`,
 	},
 	{
 		Name: "*int32 as string",
 		Data: struct {
-			Value *int32 `php:"value,string"`
+			Value *int32 `json:"value,string"`
 		}{Value: toPtr(int32(100))},
 		Expected: `a:1:{s:5:"value";s:3:"100";}`,
 	},
@@ -199,7 +199,7 @@ var testCase = []Case{
 	{
 		Name: "uint as string",
 		Data: struct {
-			Value uint `php:"value,string"`
+			Value uint `json:"value,string"`
 		}{
 			Value: uint(957123587),
 		},
@@ -208,7 +208,7 @@ var testCase = []Case{
 	{
 		Name: "uint as string 0",
 		Data: struct {
-			Value uint `php:"value,string"`
+			Value uint `json:"value,string"`
 		}{
 			Value: uint(0),
 		},
@@ -218,7 +218,7 @@ var testCase = []Case{
 	{
 		Name: "int as string positive",
 		Data: struct {
-			Value int `php:"value,string"`
+			Value int `json:"value,string"`
 		}{
 			Value: int(957123587),
 		},
@@ -227,7 +227,7 @@ var testCase = []Case{
 	{
 		Name: "int as string 0",
 		Data: struct {
-			Value int `php:"value,string"`
+			Value int `json:"value,string"`
 		}{
 			Value: int(0),
 		},
@@ -237,7 +237,7 @@ var testCase = []Case{
 	{
 		Name: "int as string positive",
 		Data: struct {
-			Value int `php:"value,string"`
+			Value int `json:"value,string"`
 		}{
 			Value: int(957123587),
 		},
@@ -246,7 +246,7 @@ var testCase = []Case{
 	{
 		Name: "int as string negative",
 		Data: struct {
-			Value int `php:"value,string"`
+			Value int `json:"value,string"`
 		}{
 			Value: int(-957123587),
 		},
@@ -312,7 +312,7 @@ var testCase = []Case{
 		Name: "ignore struct field",
 		Data: struct {
 			V       int
-			Ignored string `php:"-"`
+			Ignored string `json:"-"`
 		}{
 			V:       3,
 			Ignored: "vvv",
@@ -330,16 +330,16 @@ var testCase = []Case{
 	{
 		Name: "omitempty",
 		Data: struct {
-			V string `php:",omitempty"`
-			D string `php:",omitempty"`
+			V string `json:",omitempty"`
+			D string `json:",omitempty"`
 		}{D: "d"},
 		Expected: `a:1:{s:1:"D";s:1:"d";}`,
 	},
 	{
 		Name: "omitempty-ptr",
 		Data: struct {
-			V *string `php:",omitempty"`
-			D *string `php:",omitempty"`
+			V *string `json:",omitempty"`
+			D *string `json:",omitempty"`
 		}{
 			D: new(string),
 		},
@@ -387,7 +387,7 @@ func TestMarshal_interface_ptr(t *testing.T) {
 
 func TestMarshal_int_as_string(t *testing.T) {
 	type Container struct {
-		I int `php:"i,string"`
+		I int `json:"i,string"`
 	}
 
 	t.Run("negative", func(t *testing.T) {
@@ -413,7 +413,7 @@ func TestMarshal_int_as_string(t *testing.T) {
 
 	t.Run("ptr-direct", func(t *testing.T) {
 		data := struct {
-			I *int `php:"i,string"`
+			I *int `json:"i,string"`
 		}{
 			I: toPtr(0),
 		}
@@ -426,8 +426,8 @@ func TestMarshal_int_as_string(t *testing.T) {
 
 	t.Run("int indirect", func(t *testing.T) {
 		data := struct {
-			II *int `php:"ii,string,omitempty"`
-			I  *int `php:"i,string"`
+			II *int `json:"ii,string,omitempty"`
+			I  *int `json:"i,string"`
 		}{
 			I: toPtr(0),
 		}
@@ -440,8 +440,8 @@ func TestMarshal_int_as_string(t *testing.T) {
 
 	t.Run("int indirect", func(t *testing.T) {
 		data := struct {
-			II *int `php:"ii,string"`
-			I  *int `php:"i,string"`
+			II *int `json:"ii,string"`
+			I  *int `json:"i,string"`
 		}{
 			I: toPtr(0),
 		}
@@ -455,7 +455,7 @@ func TestMarshal_int_as_string(t *testing.T) {
 
 func TestMarshal_bool_as_string(t *testing.T) {
 	type Container struct {
-		B bool `php:",string"`
+		B bool `json:",string"`
 	}
 
 	t.Run("true", func(t *testing.T) {
@@ -473,7 +473,7 @@ func TestMarshal_bool_as_string(t *testing.T) {
 
 func TestMarshal_float32_as_string(t *testing.T) {
 	type Container struct {
-		F float32 `php:"f,string"`
+		F float32 `json:"f,string"`
 	}
 
 	t.Run("negative", func(t *testing.T) {
@@ -500,7 +500,7 @@ func TestMarshal_float32_as_string(t *testing.T) {
 
 func TestMarshal_float64_as_string(t *testing.T) {
 	type Container struct {
-		F float64 `php:"f,string"`
+		F float64 `json:"f,string"`
 	}
 
 	t.Run("negative", func(t *testing.T) {
@@ -527,10 +527,10 @@ func TestMarshal_float64_as_string(t *testing.T) {
 
 func TestMarshal_float64_as_string_reflect(t *testing.T) {
 	type Container struct {
-		Value any `php:"value"`
+		Value any `json:"value"`
 	}
 	type S struct {
-		F float64 `php:"f,string"`
+		F float64 `json:"f,string"`
 	}
 
 	t.Run("negative", func(t *testing.T) {
@@ -558,8 +558,8 @@ func TestMarshal_float64_as_string_reflect(t *testing.T) {
 func TestMarshal_ptr(t *testing.T) {
 	t.Run("int-indirect-no-omit", func(t *testing.T) {
 		type Indirect struct {
-			A *int `php:"a"`
-			B *int `php:"b"`
+			A *int `json:"a"`
+			B *int `json:"b"`
 		}
 
 		var i int = 50
@@ -572,8 +572,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("int-indirect-omitempty", func(t *testing.T) {
 		type Indirect struct {
-			A *int `php:"a"`
-			B *int `php:"b,omitempty"`
+			A *int `json:"a"`
+			B *int `json:"b,omitempty"`
 		}
 
 		var i int = 50
@@ -586,7 +586,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("int-direct", func(t *testing.T) {
 		type Direct struct {
-			Value *int `php:"value"`
+			Value *int `json:"value"`
 		}
 
 		var i int = 50
@@ -601,7 +601,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("nil", func(t *testing.T) {
 		type Data struct {
-			Value *int `php:"value"`
+			Value *int `json:"value"`
 		}
 		var data = Data{}
 
@@ -613,7 +613,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("*string", func(t *testing.T) {
 		type Data struct {
-			Value *string `php:"value"`
+			Value *string `json:"value"`
 		}
 		var s = "abcdefg"
 		var data = Data{&s}
@@ -626,8 +626,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("multiple ptr", func(t *testing.T) {
 		type Data struct {
-			Value *string `php:"value"`
-			D     *int    `php:"d,omitempty"`
+			Value *string `json:"value"`
+			D     *int    `json:"d,omitempty"`
 		}
 
 		var s = "abcdefg"
@@ -642,8 +642,8 @@ func TestMarshal_ptr(t *testing.T) {
 	t.Run("struct", func(t *testing.T) {
 		t.Run("*struct", func(t *testing.T) {
 			type Data struct {
-				Value int    `php:"value"`
-				ID    uint32 `php:"id"`
+				Value int    `json:"value"`
+				ID    uint32 `json:"id"`
 			}
 			var data = Data{}
 
@@ -655,8 +655,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("*struct-nil", func(t *testing.T) {
 			type Data struct {
-				Value int    `php:"value"`
-				ID    uint32 `php:"id"`
+				Value int    `json:"value"`
+				ID    uint32 `json:"id"`
 			}
 			var data *Data
 
@@ -668,8 +668,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("indirect", func(t *testing.T) {
 			type Data struct {
-				B     *int  `php:"b"`
-				Value *User `php:"value"`
+				B     *int  `json:"b"`
+				Value *User `json:"value"`
 			}
 
 			var b = 20
@@ -688,7 +688,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("direct", func(t *testing.T) {
 			type Data struct {
-				Value *User `php:"value"`
+				Value *User `json:"value"`
 			}
 			var data = Data{}
 
@@ -700,7 +700,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("encode direct", func(t *testing.T) {
 			type Data struct {
-				Value *User `php:"value"`
+				Value *User `json:"value"`
 			}
 			var data = Data{Value: &u}
 
@@ -712,8 +712,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("encode indirect", func(t *testing.T) {
 			type Data struct {
-				B     *int  `php:"b"`
-				Value *User `php:"value"`
+				B     *int  `json:"b"`
+				Value *User `json:"value"`
 			}
 			var data = Data{Value: &u}
 
@@ -727,7 +727,7 @@ func TestMarshal_ptr(t *testing.T) {
 	t.Run("array", func(t *testing.T) {
 		t.Run("nil-direct", func(t *testing.T) {
 			type Data struct {
-				Value *[5]int `php:"value"`
+				Value *[5]int `json:"value"`
 			}
 			var data = Data{}
 
@@ -739,8 +739,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("nil-indirect", func(t *testing.T) {
 			type Data struct {
-				Value *[5]int `php:"value"`
-				B     *bool   `php:"b"`
+				Value *[5]int `json:"value"`
+				B     *bool   `json:"b"`
 			}
 
 			var b = true
@@ -754,7 +754,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("omitempty", func(t *testing.T) {
 			type Data struct {
-				Value *[5]int `php:"value,omitempty"`
+				Value *[5]int `json:"value,omitempty"`
 			}
 			var s = [5]int{1, 6, 4, 7, 9}
 			var data = Data{&s}
@@ -767,7 +767,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("no omitempty", func(t *testing.T) {
 			type Data struct {
-				Value *[5]int `php:"value"`
+				Value *[5]int `json:"value"`
 			}
 			var s = [5]int{1, 6, 4, 7, 9}
 			var data = Data{&s}
@@ -782,7 +782,7 @@ func TestMarshal_ptr(t *testing.T) {
 	t.Run("slice", func(t *testing.T) {
 		t.Run("omitempty", func(t *testing.T) {
 			type Data struct {
-				Value *[]string `php:"value,omitempty"`
+				Value *[]string `json:"value,omitempty"`
 			}
 			var s = strings.Split("abcdefg", "")
 			require.Len(t, s, 7)
@@ -796,7 +796,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("no-omitempty", func(t *testing.T) {
 			type Data struct {
-				Value *[]string `php:"value"`
+				Value *[]string `json:"value"`
 			}
 			var s = strings.Split("abcdefg", "")
 			require.Len(t, s, 7)
@@ -810,7 +810,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("nil", func(t *testing.T) {
 			type Data struct {
-				Value *[]string `php:"value"`
+				Value *[]string `json:"value"`
 			}
 
 			var data = Data{}
@@ -823,7 +823,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("encode", func(t *testing.T) {
 			type Data struct {
-				Value *[]string `php:"value"`
+				Value *[]string `json:"value"`
 			}
 
 			var s = []string{"1", "2"}
@@ -839,7 +839,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("*string-omitempty", func(t *testing.T) {
 		type Data struct {
-			Value *string `php:"value,omitempty"`
+			Value *string `json:"value,omitempty"`
 		}
 
 		t.Run("not_nil", func(t *testing.T) {
@@ -857,7 +857,7 @@ func TestMarshal_ptr(t *testing.T) {
 	t.Run("struct-map", func(t *testing.T) {
 		t.Run("direct", func(t *testing.T) {
 			type Data struct {
-				Value *map[int]int `php:"value"`
+				Value *map[int]int `json:"value"`
 			}
 
 			t.Run("nil direct", func(t *testing.T) {
@@ -879,7 +879,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 			t.Run("omitempty encode", func(t *testing.T) {
 				type Data struct {
-					Value *map[int]int `php:"value,omitempty"`
+					Value *map[int]int `json:"value,omitempty"`
 				}
 
 				var s = map[int]int{1: 2}
@@ -893,7 +893,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 			t.Run("omitempty nil", func(t *testing.T) {
 				type Data struct {
-					Value *map[int]int `php:"value,omitempty"`
+					Value *map[int]int `json:"value,omitempty"`
 				}
 				var data = Data{}
 
@@ -906,8 +906,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 		t.Run("indirect", func(t *testing.T) {
 			type Data struct {
-				Value *map[int]int `php:"value"`
-				Bool  *bool        `php:"b"`
+				Value *map[int]int `json:"value"`
+				Bool  *bool        `json:"b"`
 			}
 
 			t.Run("nil direct", func(t *testing.T) {
@@ -929,8 +929,8 @@ func TestMarshal_ptr(t *testing.T) {
 
 			t.Run("omitempty", func(t *testing.T) {
 				type Data struct {
-					Value *map[int]int `php:"value,omitempty"`
-					Bool  *bool        `php:"b"`
+					Value *map[int]int `json:"value,omitempty"`
+					Bool  *bool        `json:"b"`
 				}
 
 				var s = map[int]int{1: 2}
@@ -947,7 +947,7 @@ func TestMarshal_ptr(t *testing.T) {
 	t.Run("map", func(t *testing.T) {
 		t.Run("nil", func(t *testing.T) {
 			type Data struct {
-				Value *map[int]int `php:"value"`
+				Value *map[int]int `json:"value"`
 			}
 
 			var data = Data{}
@@ -970,7 +970,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("int", func(t *testing.T) {
 		type Data struct {
-			Value *int `php:"value"`
+			Value *int `json:"value"`
 		}
 		var s = 644
 		var data = Data{&s}
@@ -983,7 +983,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("nested", func(t *testing.T) {
 		type Container struct {
-			Value ***uint `php:"value"`
+			Value ***uint `json:"value"`
 		}
 
 		var v uint = 8
@@ -996,7 +996,7 @@ func TestMarshal_ptr(t *testing.T) {
 
 	t.Run("recursive", func(t *testing.T) {
 		type Container struct {
-			Value any `php:"value"`
+			Value any `json:"value"`
 		}
 
 		var v uint = 8
@@ -1014,7 +1014,7 @@ func TestMarshal_map(t *testing.T) {
 	t.Run("direct", func(t *testing.T) {
 		// map in struct is a direct ptr
 		type MapOnly struct {
-			Map map[string]int64 `php:"map" json:"map"`
+			Map map[string]int64 `json:"map"`
 		}
 		actual, err := phpserialize.Marshal(MapOnly{Map: nil})
 		require.NoError(t, err)
@@ -1025,7 +1025,7 @@ func TestMarshal_map(t *testing.T) {
 	t.Run("direct", func(t *testing.T) {
 		// map in struct is a direct ptr
 		type MapOnly struct {
-			Map map[string]int64 `php:"map" json:"map"`
+			Map map[string]int64 `json:"map"`
 		}
 		actual, err := phpserialize.Marshal(MapOnly{Map: map[string]int64{"abcdef": 1}})
 		require.NoError(t, err)
@@ -1036,8 +1036,8 @@ func TestMarshal_map(t *testing.T) {
 	t.Run("indirect", func(t *testing.T) {
 		// map in struct is an indirect ptr
 		type MapPtr struct {
-			Users []Item           `php:"users" json:"users"`
-			Map   map[string]int64 `php:"map" json:"map"`
+			Users []Item           `json:"users"`
+			Map   map[string]int64 `json:"map"`
 		}
 
 		actual, err := phpserialize.Marshal(MapPtr{Map: map[string]int64{"abcdef": 1}})
@@ -1217,11 +1217,11 @@ func toPtr[T any](v T) *T {
 func TestMarshal_uint_as_string(t *testing.T) {
 	t.Run("normal", func(t *testing.T) {
 		var data = struct {
-			A uint8  `php:"a,string"`
-			B uint16 `php:"b,string"`
-			C uint32 `php:"c,string"`
-			D uint64 `php:"d,string"`
-			E uint   `php:"e,string"`
+			A uint8  `json:"a,string"`
+			B uint16 `json:"b,string"`
+			C uint32 `json:"c,string"`
+			D uint64 `json:"d,string"`
+			E uint   `json:"e,string"`
 		}{
 			A: 2,
 			B: 3,
@@ -1237,7 +1237,7 @@ func TestMarshal_uint_as_string(t *testing.T) {
 	})
 
 	type Container struct {
-		I uint `php:"i,string"`
+		I uint `json:"i,string"`
 	}
 
 	t.Run("zero", func(t *testing.T) {
@@ -1257,11 +1257,11 @@ func TestMarshal_uint_as_string(t *testing.T) {
 
 func TestMarshal_uint_as_string_omitempty(t *testing.T) {
 	var data = struct {
-		A uint8  `php:"a,string,omitempty"`
-		B uint16 `php:"b,string,omitempty"`
-		C uint32 `php:"c,string,omitempty"`
-		D uint64 `php:"d,string,omitempty"`
-		E uint   `php:"e,string,omitempty"`
+		A uint8  `json:"a,string,omitempty"`
+		B uint16 `json:"b,string,omitempty"`
+		C uint32 `json:"c,string,omitempty"`
+		D uint64 `json:"d,string,omitempty"`
+		E uint   `json:"e,string,omitempty"`
 	}{}
 
 	actual, err := phpserialize.Marshal(&data)
@@ -1273,11 +1273,11 @@ func TestMarshal_uint_as_string_omitempty(t *testing.T) {
 func TestMarshal_uint_as_string_ptr_omitempty(t *testing.T) {
 	t.Run("indirect", func(t *testing.T) {
 		var data = struct {
-			A *uint8  `php:"a,string,omitempty"`
-			B *uint16 `php:"b,string,omitempty"`
-			C *uint32 `php:"c,string,omitempty"`
-			D *uint64 `php:"d,string,omitempty"`
-			E *uint   `php:"e,string,omitempty"`
+			A *uint8  `json:"a,string,omitempty"`
+			B *uint16 `json:"b,string,omitempty"`
+			C *uint32 `json:"c,string,omitempty"`
+			D *uint64 `json:"d,string,omitempty"`
+			E *uint   `json:"e,string,omitempty"`
 		}{
 			A: toPtr[uint8](0),
 			B: toPtr[uint16](0),
@@ -1294,7 +1294,7 @@ func TestMarshal_uint_as_string_ptr_omitempty(t *testing.T) {
 
 	t.Run("uint8-indirect", func(t *testing.T) {
 		var data = struct {
-			A *uint8 `php:"a,string,omitempty"`
+			A *uint8 `json:"a,string,omitempty"`
 		}{
 			A: toPtr[uint8](0),
 		}
@@ -1307,7 +1307,7 @@ func TestMarshal_uint_as_string_ptr_omitempty(t *testing.T) {
 
 	t.Run("uint16-direct", func(t *testing.T) {
 		var data = struct {
-			B *uint16 `php:"b,string,omitempty"`
+			B *uint16 `json:"b,string,omitempty"`
 		}{
 			B: toPtr[uint16](0),
 		}
@@ -1320,7 +1320,7 @@ func TestMarshal_uint_as_string_ptr_omitempty(t *testing.T) {
 
 	t.Run("uint32-direct", func(t *testing.T) {
 		var data = struct {
-			C *uint32 `php:"c,string,omitempty"`
+			C *uint32 `json:"c,string,omitempty"`
 		}{
 			C: toPtr[uint32](0),
 		}
@@ -1333,7 +1333,7 @@ func TestMarshal_uint_as_string_ptr_omitempty(t *testing.T) {
 
 	t.Run("uint64-direct", func(t *testing.T) {
 		var data = struct {
-			D *uint64 `php:"d,string,omitempty"`
+			D *uint64 `json:"d,string,omitempty"`
 		}{
 			D: toPtr[uint64](0),
 		}
@@ -1346,7 +1346,7 @@ func TestMarshal_uint_as_string_ptr_omitempty(t *testing.T) {
 
 	t.Run("uint-direct", func(t *testing.T) {
 		var data = struct {
-			E *uint `php:"e,string,omitempty"`
+			E *uint `json:"e,string,omitempty"`
 		}{
 			E: toPtr[uint](0),
 		}
@@ -1361,7 +1361,7 @@ func TestMarshal_uint_as_string_ptr_omitempty(t *testing.T) {
 func TestMarshal_int_ptr_string(t *testing.T) {
 	t.Run("ptr direct", func(t *testing.T) {
 		data := struct {
-			I *int `php:"i,string"`
+			I *int `json:"i,string"`
 		}{
 			I: toPtr(0),
 		}
@@ -1376,7 +1376,7 @@ func TestMarshal_int_ptr_string(t *testing.T) {
 func TestMarshalBool_ptr_as_string(t *testing.T) {
 	t.Run("direct-false", func(t *testing.T) {
 		var data = struct {
-			Value *bool `php:"value,string"`
+			Value *bool `json:"value,string"`
 		}{
 			Value: toPtr(false),
 		}
@@ -1389,7 +1389,7 @@ func TestMarshalBool_ptr_as_string(t *testing.T) {
 
 	t.Run("direct-true", func(t *testing.T) {
 		var data = struct {
-			Value *bool `php:"value,string"`
+			Value *bool `json:"value,string"`
 		}{
 			Value: toPtr(true),
 		}
@@ -1402,7 +1402,7 @@ func TestMarshalBool_ptr_as_string(t *testing.T) {
 
 	t.Run("indirect-false", func(t *testing.T) {
 		var data = struct {
-			Value *bool `php:"value,string"`
+			Value *bool `json:"value,string"`
 			B     *bool
 		}{
 			Value: toPtr(false),
@@ -1416,7 +1416,7 @@ func TestMarshalBool_ptr_as_string(t *testing.T) {
 
 	t.Run("indirect-true", func(t *testing.T) {
 		var data = struct {
-			Value *bool `php:"value,string"`
+			Value *bool `json:"value,string"`
 			B     *bool
 		}{
 			Value: toPtr(true),

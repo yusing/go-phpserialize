@@ -9,18 +9,18 @@ import (
 
 func Benchmark_marshal_compare(b *testing.B) {
 	type Obj struct {
-		V int `php:"v"`
-		S int `php:"s"`
+		V int `json:"v"`
+		S int `json:"s"`
 	}
 
 	type User struct {
-		ID   uint64 `php:"id" json:"id"`
-		Name string `php:"name" json:"name"`
+		ID   uint64 `json:"id"`
+		Name string `json:"name"`
 	}
 
 	type TestData struct {
-		Users []User `php:"users"`
-		Obj   Obj    `php:"obj"`
+		Users []User `json:"users"`
+		Obj   Obj    `json:"obj"`
 	}
 
 	var data = TestData{

@@ -13,7 +13,7 @@ func TestUnmarshal_as_string(t *testing.T) {
 
 	t.Run("ptr", func(t *testing.T) {
 		type Container struct {
-			V *int `php:",omitempty,string"`
+			V *int `json:",omitempty,string"`
 		}
 
 		var c Container
@@ -29,8 +29,8 @@ func TestUnmarshal_struct_string(t *testing.T) {
 
 	t.Run("value", func(t *testing.T) {
 		type Container struct {
-			F string `php:"f1q"`
-			V bool   `php:"1a9"`
+			F string `json:"f1q"`
+			V bool   `json:"1a9"`
 		}
 
 		var c Container
@@ -42,7 +42,7 @@ func TestUnmarshal_struct_string(t *testing.T) {
 
 	t.Run("empty", func(t *testing.T) {
 		type Container struct {
-			F string `php:"f"`
+			F string `json:"f"`
 		}
 
 		var c Container
@@ -60,7 +60,7 @@ func TestUnmarshal_stdClass(t *testing.T) {
 
 	t.Run("struct", func(t *testing.T) {
 		var v struct {
-			A string `php:"a"`
+			A string `json:"a"`
 		}
 
 		require.NoError(t, phpserialize.Unmarshal([]byte(raw), &v))
@@ -81,7 +81,7 @@ func TestUnmarshal_stdClass(t *testing.T) {
 	t.Run("skip", func(t *testing.T) {
 		raw := `a:2:{s:1:"a";O:8:"stdClass":1:{s:1:"a";s:13:"a str value q";}s:5:"value";b:1;}`
 		var v struct {
-			Value bool `php:"value"`
+			Value bool `json:"value"`
 		}
 		require.NoError(t, phpserialize.Unmarshal([]byte(raw), &v))
 
@@ -94,7 +94,7 @@ func TestUnmarshal_struct_bytes(t *testing.T) {
 
 	t.Run("value", func(t *testing.T) {
 		type Container struct {
-			F []byte `php:"f1q"`
+			F []byte `json:"f1q"`
 		}
 
 		var c Container
@@ -106,7 +106,7 @@ func TestUnmarshal_struct_bytes(t *testing.T) {
 
 	t.Run("empty", func(t *testing.T) {
 		type Container struct {
-			F []byte `php:"f"`
+			F []byte `json:"f"`
 		}
 
 		var c Container
@@ -122,7 +122,7 @@ func TestUnmarshal_struct_float(t *testing.T) {
 
 	t.Run("negative", func(t *testing.T) {
 		type Container struct {
-			F float64 `php:"f"`
+			F float64 `json:"f"`
 		}
 		var c Container
 		raw := `a:1:{s:1:"f";d:3.14;}`
@@ -133,7 +133,7 @@ func TestUnmarshal_struct_float(t *testing.T) {
 
 	t.Run("positive", func(t *testing.T) {
 		type Container struct {
-			F float64 `php:"f"`
+			F float64 `json:"f"`
 		}
 		var c Container
 		raw := `a:1:{s:1:"f";d:1;}`
@@ -144,7 +144,7 @@ func TestUnmarshal_struct_float(t *testing.T) {
 
 	t.Run("zero", func(t *testing.T) {
 		type Container struct {
-			F float64 `php:"f"`
+			F float64 `json:"f"`
 		}
 		var c Container
 		raw := `a:1:{s:1:"f";d:-3.14;}`
@@ -155,7 +155,7 @@ func TestUnmarshal_struct_float(t *testing.T) {
 
 	t.Run("float32", func(t *testing.T) {
 		type Container struct {
-			F float32 `php:"f1q"`
+			F float32 `json:"f1q"`
 		}
 
 		var c Container
@@ -167,7 +167,7 @@ func TestUnmarshal_struct_float(t *testing.T) {
 
 	t.Run("float64", func(t *testing.T) {
 		type Container struct {
-			F float64 `php:"f1q"`
+			F float64 `json:"f1q"`
 		}
 
 		var c Container
@@ -183,7 +183,7 @@ func TestUnmarshal_struct_uint(t *testing.T) {
 
 	t.Run("uint", func(t *testing.T) {
 		type Container struct {
-			F uint `php:"f1q"`
+			F uint `json:"f1q"`
 		}
 
 		var c Container
@@ -195,7 +195,7 @@ func TestUnmarshal_struct_uint(t *testing.T) {
 
 	t.Run("uint8", func(t *testing.T) {
 		type Container struct {
-			F uint8 `php:"f1q"`
+			F uint8 `json:"f1q"`
 		}
 
 		var c Container
@@ -207,7 +207,7 @@ func TestUnmarshal_struct_uint(t *testing.T) {
 
 	t.Run("uint16", func(t *testing.T) {
 		type Container struct {
-			F uint16 `php:"f1q"`
+			F uint16 `json:"f1q"`
 		}
 
 		var c Container
@@ -219,7 +219,7 @@ func TestUnmarshal_struct_uint(t *testing.T) {
 
 	t.Run("uint32", func(t *testing.T) {
 		type Container struct {
-			F uint32 `php:"f1q"`
+			F uint32 `json:"f1q"`
 		}
 
 		var c Container
@@ -231,7 +231,7 @@ func TestUnmarshal_struct_uint(t *testing.T) {
 
 	t.Run("uint64", func(t *testing.T) {
 		type Container struct {
-			F uint64 `php:"f1q"`
+			F uint64 `json:"f1q"`
 		}
 
 		var c Container
@@ -247,7 +247,7 @@ func TestUnmarshal_struct_int(t *testing.T) {
 
 	t.Run("int", func(t *testing.T) {
 		type Container struct {
-			F int `php:"f1q"`
+			F int `json:"f1q"`
 		}
 
 		var c Container
@@ -259,7 +259,7 @@ func TestUnmarshal_struct_int(t *testing.T) {
 
 	t.Run("int8", func(t *testing.T) {
 		type Container struct {
-			F int8 `php:"f1q"`
+			F int8 `json:"f1q"`
 		}
 
 		var c Container
@@ -271,7 +271,7 @@ func TestUnmarshal_struct_int(t *testing.T) {
 
 	t.Run("int16", func(t *testing.T) {
 		type Container struct {
-			F int16 `php:"f1q"`
+			F int16 `json:"f1q"`
 		}
 
 		var c Container
@@ -283,7 +283,7 @@ func TestUnmarshal_struct_int(t *testing.T) {
 
 	t.Run("int32", func(t *testing.T) {
 		type Container struct {
-			F int32 `php:"f1q"`
+			F int32 `json:"f1q"`
 		}
 
 		var c Container
@@ -295,7 +295,7 @@ func TestUnmarshal_struct_int(t *testing.T) {
 
 	t.Run("int64", func(t *testing.T) {
 		type Container struct {
-			F int64 `php:"f1q"`
+			F int64 `json:"f1q"`
 		}
 
 		var c Container
@@ -311,7 +311,7 @@ func TestUnmarshal_slice(t *testing.T) {
 
 	t.Run("empty", func(t *testing.T) {
 		type Container struct {
-			Value []string `php:"value"`
+			Value []string `json:"value"`
 		}
 
 		var c Container
@@ -323,7 +323,7 @@ func TestUnmarshal_slice(t *testing.T) {
 
 	t.Run("string", func(t *testing.T) {
 		type Container struct {
-			Value []string `php:"value"`
+			Value []string `json:"value"`
 		}
 		var c Container
 		raw := `a:3:{s:2:"bb";b:1;s:5:"value";a:3:{i:0;s:3:"one";i:1;s:3:"two";i:2;s:1:"q";}}`
@@ -333,7 +333,7 @@ func TestUnmarshal_slice(t *testing.T) {
 
 	t.Run("string more length", func(t *testing.T) {
 		type Container struct {
-			Value []string `php:"value"`
+			Value []string `json:"value"`
 		}
 		var c Container
 		raw := `a:1:{s:5:"value";a:6:{i:0;s:3:"one";i:1;s:3:"two";i:2;s:1:"q";i:3;s:1:"a";i:4;s:2:"zx";i:5;s:3:"abc";}}`
@@ -348,7 +348,7 @@ func TestUnmarshal_array(t *testing.T) {
 
 	t.Run("empty", func(t *testing.T) {
 		type Container struct {
-			Value [5]string `php:"value"`
+			Value [5]string `json:"value"`
 		}
 
 		var c Container
@@ -360,7 +360,7 @@ func TestUnmarshal_array(t *testing.T) {
 
 	t.Run("string less length", func(t *testing.T) {
 		type Container struct {
-			Value [5]string `php:"value"`
+			Value [5]string `json:"value"`
 		}
 		var c Container
 		raw := `a:1:{s:5:"value";a:3:{i:0;s:3:"one";i:1;s:3:"two";i:2;s:1:"q";}}`
@@ -371,7 +371,7 @@ func TestUnmarshal_array(t *testing.T) {
 
 	t.Run("string more length", func(t *testing.T) {
 		type Container struct {
-			Value [5]string `php:"value"`
+			Value [5]string `json:"value"`
 		}
 		var c Container
 		raw := `a:1:{s:5:"value";a:6:{i:0;s:3:"one";i:1;s:3:"two";i:2;s:1:"q";i:3;s:1:"a";i:4;s:2:"zx";i:5;s:3:"abc";}}`
@@ -384,7 +384,7 @@ func TestUnmarshal_array(t *testing.T) {
 func TestUnmarshal_skip_value(t *testing.T) {
 	t.Parallel()
 	type Container struct {
-		Value []string `php:"value"`
+		Value []string `json:"value"`
 	}
 
 	var c Container
@@ -407,7 +407,7 @@ func (u *unmarshaler) UnmarshalPHP(bytes []byte) error {
 func TestUnmarshal_unmarshaler(t *testing.T) {
 	t.Parallel()
 	type Container struct {
-		Value unmarshaler `php:"value"`
+		Value unmarshaler `json:"value"`
 	}
 
 	var c Container
@@ -421,7 +421,7 @@ func TestUnmarshal_string_wrapper(t *testing.T) {
 	t.Parallel()
 
 	type Container struct {
-		Value int `php:"value,string"`
+		Value int `json:"value,string"`
 	}
 
 	var c Container
@@ -436,7 +436,7 @@ func TestUnmarshal_map(t *testing.T) {
 	t.Run("map[string]string", func(t *testing.T) {
 		raw := `a:1:{s:5:"value";a:5:{s:3:"one";s:1:"1";s:3:"two";s:1:"2";s:5:"three";s:1:"3";s:4:"four";s:1:"4";s:4:"five";s:1:"5";}}`
 		var c struct {
-			Value map[string]string `php:"value"`
+			Value map[string]string `json:"value"`
 		}
 
 		err := phpserialize.Unmarshal([]byte(raw), &c)
@@ -453,7 +453,7 @@ func TestUnmarshal_map(t *testing.T) {
 	t.Run("map[any]string", func(t *testing.T) {
 		raw := `a:1:{s:5:"value";a:5:{i:1;s:3:"one";i:2;s:3:"two";i:3;s:5:"three";i:4;s:4:"four";i:5;s:4:"five";}}`
 		var c struct {
-			Value map[any]string `php:"value"`
+			Value map[any]string `json:"value"`
 		}
 
 		err := phpserialize.Unmarshal([]byte(raw), &c)
@@ -470,7 +470,7 @@ func TestUnmarshal_map(t *testing.T) {
 	t.Run("any", func(t *testing.T) {
 		raw := `a:1:{s:5:"value";a:5:{i:1;s:3:"one";i:2;s:3:"two";i:3;s:5:"three";i:4;s:4:"four";i:5;s:4:"five";}}`
 		var c struct {
-			Value any `php:"value"`
+			Value any `json:"value"`
 		}
 
 		err := phpserialize.Unmarshal([]byte(raw), &c)
@@ -490,7 +490,7 @@ func TestUnmarshal_ptr_string(t *testing.T) {
 
 	t.Run("value", func(t *testing.T) {
 		var c struct {
-			F *string `php:"f1q"`
+			F *string `json:"f1q"`
 		}
 
 		raw := `a:1:{s:3:"f1q";s:10:"0147852369";}`
@@ -502,7 +502,7 @@ func TestUnmarshal_ptr_string(t *testing.T) {
 
 	t.Run("empty", func(t *testing.T) {
 		var c struct {
-			F *string `php:"f"`
+			F *string `json:"f"`
 		}
 
 		raw := `a:0:{}`
@@ -513,7 +513,7 @@ func TestUnmarshal_ptr_string(t *testing.T) {
 
 	t.Run("nested", func(t *testing.T) {
 		var c struct {
-			F **string `php:"f"`
+			F **string `json:"f"`
 		}
 
 		raw := `a:0:{}`
@@ -581,8 +581,8 @@ func TestUnmarshal_as_string_2(t *testing.T) {
 	type ID uint32
 	type Type uint8
 	type Item struct {
-		ID   ID   `php:"eid,string"`
-		Type Type `php:"type"`
+		ID   ID   `json:"eid,string"`
+		Type Type `json:"type"`
 	}
 	type Collection = map[ID]Item
 
@@ -599,8 +599,8 @@ func TestUnmarshal_null_array_1(t *testing.T) {
 	raw := `a:0:{}`
 
 	type Tag struct {
-		Name  *string `php:"tag_name"`
-		Count int     `php:"result,string"`
+		Name  *string `json:"tag_name"`
+		Count int     `json:"result,string"`
 	}
 
 	var tags []Tag
@@ -642,9 +642,9 @@ func TestUnmarshal_array_with_bool_to_map(t *testing.T) {
 }
 
 type Tag struct {
-	Name       *string `php:"tag_name"`
-	Count      int     `php:"result,string"`
-	TotalCount int     `php:"tag_results,string"`
+	Name       *string `json:"tag_name"`
+	Count      int     `json:"result,string"`
+	TotalCount int     `json:"tag_results,string"`
 }
 
 func TestUnmarshal_error_case(t *testing.T) {
@@ -656,14 +656,14 @@ func TestUnmarshal_error_case(t *testing.T) {
 
 func TestUnmarshal_issue_69(t *testing.T) {
 	type UnionInfo struct {
-		CompanyId int    `php:"company_id" json:"company_id"`
-		CorpID    string `php:"corp_id" json:"corp_id"`
-		OpenID    string `php:"openid" json:"openid"`
-		From      string `php:"from" json:"from"`
-		Uid       int    `php:"uid" json:"uid"`
-		UnionID   string `php:"unionid" json:"unionid"`
-		OrgUid    int    `php:"org_uid,omitempty" json:"org_uid"`
-		FromType  int    `php:"from_type" json:"from_type"`
+		CompanyId int    `json:"company_id"`
+		CorpID    string `json:"corp_id"`
+		OpenID    string `json:"openid"`
+		From      string `json:"from"`
+		Uid       int    `json:"uid"`
+		UnionID   string `json:"unionid"`
+		OrgUid    int    `json:"org_uid,omitempty"`
+		FromType  int    `json:"from_type"`
 	}
 
 	ddd := `a:7:{s:4:"from";s:4:"ding";s:6:"openid";s:15:"360946652480232";s:7:"unionid";s:26:"0Cg1QDDRfgyz8qMjqwwN0giEiE";s:10:"company_id";i:1;s:7:"corp_id";s:36:"ding4eb8f5a40a6244aa35c2f4657eb6378f";s:8:"agent_id";i:894146310;s:3:"uid";i:2;}`
